@@ -1,7 +1,7 @@
 [
   {
     "ContainingType": "UniversityApi.Controllers.GroupsController",
-    "Method": "GetGroup",
+    "Method": "GetGroups",
     "RelativePath": "api/Groups",
     "HttpMethod": "GET",
     "IsController": true,
@@ -99,29 +99,19 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "UniversityApi.Controllers.StudentController",
+    "ContainingType": "UniversityApi.Controllers.StudentsController",
     "Method": "GetStudents",
-    "RelativePath": "api/Student",
+    "RelativePath": "api/Students",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.List\u00601[[UniversityApi.Dtos.GroupGetDto, Services, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
-    "ContainingType": "UniversityApi.Controllers.StudentController",
-    "Method": "Create",
-    "RelativePath": "api/Student",
+    "ContainingType": "UniversityApi.Controllers.StudentsController",
+    "Method": "CreateStudent",
+    "RelativePath": "api/Students",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -135,9 +125,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "UniversityApi.Controllers.StudentController",
-    "Method": "GetStudentById",
-    "RelativePath": "api/Student/{id}",
+    "ContainingType": "UniversityApi.Controllers.StudentsController",
+    "Method": "GetStudent",
+    "RelativePath": "api/Students/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -148,22 +138,12 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "UniversityApi.Dtos.GroupGetDto",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
-    "ContainingType": "UniversityApi.Controllers.StudentController",
-    "Method": "Edit",
-    "RelativePath": "api/Student/{id}",
+    "ContainingType": "UniversityApi.Controllers.StudentsController",
+    "Method": "UpdateStudent",
+    "RelativePath": "api/Students/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -182,9 +162,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "UniversityApi.Controllers.StudentController",
-    "Method": "Delete",
-    "RelativePath": "api/Student/{id}",
+    "ContainingType": "UniversityApi.Controllers.StudentsController",
+    "Method": "DeleteStudent",
+    "RelativePath": "api/Students/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,

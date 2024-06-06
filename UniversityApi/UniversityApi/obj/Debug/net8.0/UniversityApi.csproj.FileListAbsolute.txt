@@ -145,3 +145,4 @@ C:\Users\Asus\Desktop\Task1\UniversityApi\UniversityApi\bin\Debug\net8.0\Service
 C:\Users\Asus\Desktop\Task1\UniversityApi\UniversityApi\bin\Debug\net8.0\Services.pdb
 C:\Users\Asus\Desktop\Task1\UniversityApi\UniversityApi\bin\Debug\net8.0\Core.pdb
 C:\Users\Asus\Desktop\Task1\UniversityApi\UniversityApi\bin\Debug\net8.0\Data.pdb
+C:\Users\Asus\Desktop\Task1\UniversityApi\UniversityApi\obj\Debug\net8.0\UniversityApi.sourcelink.json

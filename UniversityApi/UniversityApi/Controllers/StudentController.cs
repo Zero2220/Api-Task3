@@ -1,105 +1,111 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using UniversityApi.Data;
+﻿using Microsoft.AspNetCore.Mvc;
+using Services.Exceptions;
+using Services.Services.Implementations;
+using Services.Services.Interfaces;
 using UniversityApi.Dtos;
 
 namespace UniversityApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentController : ControllerBase
+    public class StudentsController : ControllerBase
     {
-        private readonly UniDatabase _context;
+        private readonly StudentService _studentService;
 
-        public StudentController(UniDatabase context)
+        public StudentsController(StudentService studentService)
         {
-            _context = context;
+            _studentService = studentService;
         }
 
         [HttpGet("")]
-        public ActionResult<List<GroupGetDto>> GetStudents()
+        public IActionResult GetStudents()
         {
-            List<Student> groups = _context.Students.ToList();
-
-            List<GetStudentDto> result = groups.Select(x => new GetStudentDto
+            try
             {
-                FullName = x.FullName,
-                Email = x.Email,
-                BirthDate = x.BirthDate,
-            }).ToList();
-
-            return Ok(result);
+                var students = _studentService.GetAll();
+                return Ok(students);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(500, "An error occurred while retrieving students.");
+            }
         }
 
         [HttpGet("{id}")]
-        public ActionResult<GroupGetDto> GetStudentById(int id)
+        public IActionResult GetStudent(int id)
         {
-            var data = _context.Students.FirstOrDefault(x => x.Id == id);
-
-            if (data == null)
+            try
             {
-                return NotFound();
+                var student = _studentService.GetById(id);
+                return Ok(student);
             }
-
-            GetStudentDto dto = new GetStudentDto
+            catch (NullReferenceException)
             {
-                Email = data.Email,
-                FullName = data.FullName,
-                BirthDate = data.BirthDate,
-            };
-            return Ok(dto);
+                return NotFound($"Student with ID {id} not found.");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(500, "An error occurred while retrieving the student.");
+            }
         }
 
         [HttpPost("")]
-        public ActionResult Create(CreateStudentDto createDto)
+        public IActionResult CreateStudent([FromBody] CreateStudentDto createDto)
         {
-            Student student = new Student
+            try
             {
-                GroupId = createDto.GroupId,
-                FullName = createDto.FullName,
-                Email = createDto.Email,
-                BirthDate= createDto.BirthDate,
-                
-            };
-
-            _context.Students.Add(student);
-            _context.SaveChanges();
-            return StatusCode(201);
+                var studentId = _studentService.Create(createDto);
+                return CreatedAtAction(nameof(GetStudent), new { id = studentId }, null);
+            }
+            catch (NullReferenceException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(500, "An error occurred while creating the student.");
+            }
         }
 
         [HttpPut("{id}")]
-        public ActionResult Edit(int id, EditStudentDto editDto)
+        public IActionResult UpdateStudent(int id, [FromBody] EditStudentDto editDto)
         {
-            var student = _context.Students.FirstOrDefault(x => x.Id == id);
-
-            if (student == null)
+            try
             {
-                return NotFound();
+                _studentService.Edit(id, editDto);
+                return NoContent();
             }
-
-            student.Email = editDto.Email;
-            student.FullName = editDto.FullName;
-            student.BirthDate = editDto.BirthDate;
-            student.GroupId = editDto.GroupId;
-
-            _context.Update(student);
-            _context.SaveChanges();
-            return StatusCode(204);
+            catch (NullReferenceException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(500, "An error occurred while updating the student.");
+            }
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public IActionResult DeleteStudent(int id)
         {
-            Student student = _context.Students.FirstOrDefault(x => x.Id == id);
-
-            if (student == null)
+            try
             {
-                return NotFound();
+                _studentService.Delete(id);
+                return NoContent();
             }
-
-            _context.Students.Remove(student);
-            _context.SaveChanges();
-            return StatusCode(204);
+            catch (NullReferenceException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(500, "An error occurred while deleting the student.");
+            }
         }
     }
 }

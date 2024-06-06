@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Services.Exceptions;
-using Services.Services.Implementations;
+﻿using Microsoft.AspNetCore.Mvc;
+using Services.Services.Interfaces;
+using UniversityApi.Dtos;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using UniversityApi.Data;
-using UniversityApi.Dtos;
 
 namespace UniversityApi.Controllers
 {
@@ -14,30 +10,24 @@ namespace UniversityApi.Controllers
     [ApiController]
     public class GroupsController : ControllerBase
     {
-        private readonly UniDatabase _context;
-        private readonly GroupService _groupService;
+        private readonly IGroupService _groupService;
 
-        public GroupsController(UniDatabase context,GroupService groupService)
+        public GroupsController(IGroupService groupService)
         {
-            _context = context;
             _groupService = groupService;
-
         }
 
         [HttpGet("")]
-        public ActionResult<List<GroupGetDto>> GetGroup()
+        public ActionResult<List<GroupGetDto>> GetGroups()
         {
             try
             {
-                return StatusCode(201, new { id = _groupService.GetAll() });
+                return Ok(_groupService.GetAll());
             }
-            catch (DublicateEntityException e)
+            catch (Exception ex)
             {
-                return Conflict();
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, "Bilinmedik bir xeta bas verdi");
+               
+                return StatusCode(500, "An unknown error occurred");
             }
         }
 
@@ -46,15 +36,12 @@ namespace UniversityApi.Controllers
         {
             try
             {
-                return StatusCode(201, new { id = _groupService.GetById(id) });
+                return Ok(_groupService.GetById(id));
             }
-            catch (DublicateEntityException e)
+            catch (Exception ex)
             {
-                return Conflict();
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, "Bilinmedik bir xeta bas verdi");
+                
+                return StatusCode(500, "An unknown error occurred");
             }
         }
 
@@ -63,15 +50,13 @@ namespace UniversityApi.Controllers
         {
             try
             {
-                return StatusCode(201, new { id = _groupService.Create(createDto) });
+                var id = _groupService.Create(createDto);
+                return StatusCode(201, new { id });
             }
-            catch (DublicateEntityException e)
+            catch (Exception ex)
             {
-                return Conflict();
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, "Bilinmedik bir xeta bas verdi");
+                
+                return StatusCode(500, "An unknown error occurred");
             }
         }
 
@@ -80,15 +65,13 @@ namespace UniversityApi.Controllers
         {
             try
             {
-                return StatusCode(201, new { id = _groupService.Edit(id,editDto) });
+                var groupId = _groupService.Edit(id, editDto);
+                return StatusCode(201, new { id = groupId });
             }
-            catch (DublicateEntityException e)
+            catch (Exception ex)
             {
-                return Conflict();
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, "Bilinmedik bir xeta bas verdi");
+               
+                return StatusCode(500, "An unknown error occurred");
             }
         }
 
@@ -97,17 +80,14 @@ namespace UniversityApi.Controllers
         {
             try
             {
-                return StatusCode(201, new { id = _groupService.Delete(id) });
+                var groupId = _groupService.Delete(id);
+                return StatusCode(201, new { id = groupId });
             }
-            catch (DublicateEntityException e)
+            catch (Exception ex)
             {
-                return Conflict();
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, "Bilinmedik bir xeta bas verdi");
+                
+                return StatusCode(500, "An unknown error occurred");
             }
         }
     }
 }
-

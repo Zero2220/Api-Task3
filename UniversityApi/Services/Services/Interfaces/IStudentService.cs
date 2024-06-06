@@ -7,7 +7,7 @@ using UniversityApi.Dtos;
 
 namespace Services.Services.Interfaces
 {
-    internal interface IStudentService
+    public interface IStudentService
     {
         int Create(CreateStudentDto createDto);
         List<GetStudentDto> GetAll();
